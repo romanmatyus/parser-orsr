@@ -667,9 +667,6 @@ class ConnectorOrsr
             if (!$this->showXmlErrors) {
                 return [];
             }
-            if (!$errors && !empty($php_errormsg)) {
-                $errors = $php_errormsg;
-            }
             throw new \Exception('XML Error - failed loading XHTML page into DOM XML parser - corrupted XML structure. Please consider enabling tidy extension.' . ($errors ? "\n Found errors:\n" . print_r($errors, 1) : ''));
         }
 
@@ -807,9 +804,6 @@ class ConnectorOrsr
             if (!$this->showXmlErrors) {
                 $this->data = [];
                 return [];
-            }
-            if (!$errors && !empty($php_errormsg)) {
-                $errors = $php_errormsg;
             }
             throw new \Exception('XML Error - failed loading XHTML page into DOM XML parser - corrupted XML structure. Please consider enabling tidy extension.' . ($errors ? "\n Found errors:\n" . print_r($errors, 1) : ''));
         }
