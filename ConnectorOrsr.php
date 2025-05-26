@@ -579,7 +579,7 @@ class ConnectorOrsr
                 // preverime, ci existuje viac liniek pre rovnake ICO,
                 // platna je linka, kde vypis neobsahuje "spis postupeny z dovodu miestnej neprislusnosti"
                 // note: we use single-byte stripos() to avoid unnecessary codepage conversion win-1250 -> utf-8
-                if (!$links || false === stripos($html, 'vodu miestnej nepr')) {
+                if (!$links || (false === stripos($html, 'vodu miestnej nepr') && false === stripos($html, 'vodu zmeny pr'))) {
                     // jedina linka alebo platny spis
                     break;
                 }
