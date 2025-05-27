@@ -256,6 +256,11 @@ $("#company_ico").on("keyup", function(){
 Changelog
 =========
 
+1.1.3 - 27.05.2025
+------------------
+* ENH - properly detect valid item - not containing "Výpis je neaktuálny z dôvodu zmeny právnej formy"
+* ENH - added test + CI workflow for PHP 7.1 - 8.4 (@romanmatyus)
+
 1.1.2 - 21.10.2024
 ------------------
 * ENH - store fetched source link (permalink) as attribute "srcUrl" along with extracted data

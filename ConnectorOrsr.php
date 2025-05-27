@@ -3,8 +3,8 @@
  * Parser pre vypis z obchodneho registra SR
  * Lookup service for Slovak commercial register (www.orsr.sk)
  *
- * Version 1.1.2 (released 21.10.2024)
- * (c) 2015 - 2024 lubosdz@gmail.com
+ * Version 1.1.3 (released 27.05.2025)
+ * (c) 2015 - 2025 lubosdz@gmail.com
  *
  * ------------------------------------------------------------------
  * Disclaimer / Prehlásenie:
@@ -66,7 +66,7 @@ namespace lubosdz\parserOrsr;
  */
 class ConnectorOrsr
 {
-    const API_VERSION = '1.1.2';
+    const API_VERSION = '1.1.3';
 
     /** @var string Endpoint URL */
     const URL_BASE = 'https://www.orsr.sk';
@@ -577,7 +577,9 @@ class ConnectorOrsr
             while ($link = array_shift($links)) {
                 $html = $this->getDetailByPartialLink($link, true);
                 // preverime, ci existuje viac liniek pre rovnake ICO,
-                // platna je linka, kde vypis neobsahuje "spis postupeny z dovodu miestnej neprislusnosti"
+                // platna je linka, kde vypis neobsahuje v zahlavi ziadny z textov:
+                //  - "Spis odstúpený na iný registrový súd z dôvodu miestnej nepríslušnosti"
+                //  - "Výpis je neaktuálny z dôvodu zmeny právnej formy"
                 // note: we use single-byte stripos() to avoid unnecessary codepage conversion win-1250 -> utf-8
                 if (!$links || (false === stripos($html, 'vodu miestnej nepr') && false === stripos($html, 'vodu zmeny pr'))) {
                     // jedina linka alebo platny spis
@@ -666,6 +668,9 @@ class ConnectorOrsr
             libxml_clear_errors();
             if (!$this->showXmlErrors) {
                 return [];
+            }
+            if (!$errors && error_get_last()) {
+                $errors = error_get_last()['message'];
             }
             throw new \Exception('XML Error - failed loading XHTML page into DOM XML parser - corrupted XML structure. Please consider enabling tidy extension.' . ($errors ? "\n Found errors:\n" . print_r($errors, 1) : ''));
         }
@@ -804,6 +809,9 @@ class ConnectorOrsr
             if (!$this->showXmlErrors) {
                 $this->data = [];
                 return [];
+            }
+            if (!$errors && error_get_last()) {
+                $errors = error_get_last()['message'];
             }
             throw new \Exception('XML Error - failed loading XHTML page into DOM XML parser - corrupted XML structure. Please consider enabling tidy extension.' . ($errors ? "\n Found errors:\n" . print_r($errors, 1) : ''));
         }

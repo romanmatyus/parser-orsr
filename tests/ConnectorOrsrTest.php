@@ -113,6 +113,12 @@ class ConnectorOrsrTest extends TestCase
 		$data = $connector->getDetailByICO('45281025');
 		$this->assertTrue(!empty($data['obchodne_meno']) && false !== stripos($data['obchodne_meno'], 'TEST '));
 		$this->assertTrue(!empty($data['adresa']['street']) && false !== stripos($data['adresa']['street'], 'Textiln'));
+		$connector->resetOutput();
+
+		// since 27/05/2025 (1.1.3) - multiple ICO - vrati platny zaznam "Duslo, a.s." namiesto predosleho subjektu "AVION Invest, a.s."
+		$data = $connector->getDetailByICO('35 826 487'); // ICO = 8 digits, autostrip spaces
+		$this->assertSame('Duslo, a.s.', $data['obchodne_meno'], 'Name must be "Duslo, a.s.", not "' . $data['obchodne_meno'] . '"');
+		$connector->resetOutput();
 	}
 
 }
