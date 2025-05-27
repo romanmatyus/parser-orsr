@@ -579,7 +579,7 @@ class ConnectorOrsr
                 // preverime, ci existuje viac liniek pre rovnake ICO,
                 // platna je linka, kde vypis neobsahuje "spis postupeny z dovodu miestnej neprislusnosti"
                 // note: we use single-byte stripos() to avoid unnecessary codepage conversion win-1250 -> utf-8
-                if (!$links || false === stripos($html, 'vodu miestnej nepr')) {
+                if (!$links || (false === stripos($html, 'vodu miestnej nepr') && false === stripos($html, 'vodu zmeny pr'))) {
                     // jedina linka alebo platny spis
                     break;
                 }
@@ -666,9 +666,6 @@ class ConnectorOrsr
             libxml_clear_errors();
             if (!$this->showXmlErrors) {
                 return [];
-            }
-            if (!$errors && !empty($php_errormsg)) {
-                $errors = $php_errormsg;
             }
             throw new \Exception('XML Error - failed loading XHTML page into DOM XML parser - corrupted XML structure. Please consider enabling tidy extension.' . ($errors ? "\n Found errors:\n" . print_r($errors, 1) : ''));
         }
@@ -807,9 +804,6 @@ class ConnectorOrsr
             if (!$this->showXmlErrors) {
                 $this->data = [];
                 return [];
-            }
-            if (!$errors && !empty($php_errormsg)) {
-                $errors = $php_errormsg;
             }
             throw new \Exception('XML Error - failed loading XHTML page into DOM XML parser - corrupted XML structure. Please consider enabling tidy extension.' . ($errors ? "\n Found errors:\n" . print_r($errors, 1) : ''));
         }
