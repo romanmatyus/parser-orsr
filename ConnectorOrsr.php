@@ -580,8 +580,10 @@ class ConnectorOrsr
                 // platna je linka, kde vypis neobsahuje v zahlavi ziadny z textov:
                 //  - "Spis odstúpený na iný registrový súd z dôvodu miestnej nepríslušnosti"
                 //  - "Výpis je neaktuálny z dôvodu zmeny právnej formy"
+                // HTML neobsahuje:
+                //  - "Deň výmazu"
                 // note: we use single-byte stripos() to avoid unnecessary codepage conversion win-1250 -> utf-8
-                if (!$links || (false === stripos($html, 'vodu miestnej nepr') && false === stripos($html, 'vodu zmeny pr'))) {
+                if (!$links || (false === stripos($html, 'vodu miestnej nepr') && false === stripos($html, 'vodu zmeny pr') && false === stripos(iconv( 'Windows-1250', 'UTF-8', $html), 'Deň výmazu'))) {
                     // jedina linka alebo platny spis
                     break;
                 }

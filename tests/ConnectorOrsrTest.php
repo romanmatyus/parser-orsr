@@ -121,4 +121,11 @@ class ConnectorOrsrTest extends TestCase
 		$connector->resetOutput();
 	}
 
+    public function testSkipDeletedRecord()
+    {
+        $connector = new ConnectorOrsr;
+
+        $data = $connector->getDetailByICO('00681300');
+        $this->assertSame('Odvoz a likvidácia odpadu a.s. v skratke: OLO a.s.', $data['obchodne_meno']);
+    }
 }
